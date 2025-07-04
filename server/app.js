@@ -12,9 +12,7 @@ app.use(express.json());
 
 app.use("/api", routes);
 
-const DB = `mongodb+srv://justinxie712:MyDiaryCluster@my-diary-cluster.w86alae.mongodb.net/?retryWrites=true&w=majority&appName=my-diary-cluster`;
-
-mongoose.connect(DB).then(() => {
+mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(3000, () =>
     console.log("Server running on http://localhost:3000")
   );
