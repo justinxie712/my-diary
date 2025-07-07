@@ -13,5 +13,8 @@
   "description": "",
   "dependencies": {
     "mongodb": "^6.17.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
   }
 }
