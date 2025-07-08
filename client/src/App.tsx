@@ -8,6 +8,7 @@ import { useAuth } from "./context/AuthContext";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import "./App.scss";
+import Register from "./components/Register";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -19,6 +20,7 @@ function App() {
           path="/login"
           element={isAuthenticated ? <Navigate to="/home" /> : <Login />}
         />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/home"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}

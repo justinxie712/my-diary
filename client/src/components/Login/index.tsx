@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./styles.scss";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ function Login() {
 
   return (
     <form onSubmit={handleSubmit} className="login-form">
-      <h2>Login to My Diary</h2>
+      <h2>Login to Diary.me</h2>
       <input
         type="text"
         value={username}
@@ -40,6 +42,16 @@ function Login() {
         placeholder="Password"
       />
       <button type="submit">Login</button>
+      <div className="register-redirect">
+        <p>Don't have an account?</p>
+        <button
+          type="button"
+          className="register-button"
+          onClick={() => navigate("/register")}
+        >
+          Register
+        </button>
+      </div>
     </form>
   );
 }

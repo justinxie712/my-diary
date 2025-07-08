@@ -49,7 +49,7 @@ function Home() {
   return (
     <div className="home">
       <header>
-        <h1>My Diary</h1>
+        <h1>Diary.me</h1>
         <button onClick={logout}>Logout</button>
       </header>
 
