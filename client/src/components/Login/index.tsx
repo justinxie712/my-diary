@@ -1,0 +1,47 @@
+import { useState } from "react";
+import "./styles.scss";
+import { useAuth } from "../../context/AuthContext";
+
+function Login() {
+  const { login } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await fetch("http://127.0.0.1:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      login(data.token);
+    } else {
+      alert(data.error || "Login failed");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="login-form">
+      <h2>Login to My Diary</h2>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+}
+
+export default Login;
