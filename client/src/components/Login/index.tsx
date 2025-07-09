@@ -3,32 +3,38 @@ import "./styles.scss";
 import "../../styles/global.scss";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const res = await fetch("http://127.0.0.1:3000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      try {
+        const res = await fetch("http://127.0.0.1:3000/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
 
-      const data = await res.json();
-      if (res.ok) {
-        login(data.token);
-      } else {
-        setError(data.msg);
+        const data = await res.json();
+
+        if (res.ok) {
+          login(data.token);
+        } else {
+          toast.error(data.msg || "Login failed. Please try again.");
+        }
+      } catch (err) {
+        toast.error("Network error. Please check your connection.");
       }
     },
-    [error]
+    [username, password, login]
   );
 
   return (
@@ -59,12 +65,8 @@ function Login() {
             </button>
           </div>
         </form>
-        {error && (
-          <div onClick={() => setError(null)} className="error">
-            {error}
-          </div>
-        )}
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }
