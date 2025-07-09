@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./styles.scss";
 import { useAuth } from "../../context/AuthContext";
+import DiaryEntry from "../DiaryEntry";
+import EntryForm from "../EntryForm";
 
 interface Entry {
   _id: string;
@@ -16,15 +18,29 @@ function Home() {
   const [newContent, setNewContent] = useState("");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:3000/api/entries", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then(setEntries)
-      .catch(console.error);
+    const fetchEntries = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:3000/api/entries", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch entries: ${res.status}`);
+        }
+
+        const data = await res.json();
+        setEntries(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (token) {
+      fetchEntries();
+    }
   }, [token]);
 
-  const createEntry = async (e: React.FormEvent) => {
+  const handleCreateEntry = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const res = await fetch("http://127.0.0.1:3000/api/entries", {
@@ -46,36 +62,40 @@ function Home() {
     }
   };
 
+  const handleDeleteEntry = async (id: string) => {
+    try {
+      await fetch(`http://127.0.0.1:3000/api/entries/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setEntries((prev) => prev.filter((e) => e._id !== id));
+    } catch (err) {
+      console.error("Failed to delete entry:", err);
+    }
+  };
+
   return (
     <div className="home">
       <header>
         <h1>Diary.me</h1>
         <button onClick={logout}>Logout</button>
       </header>
-
-      <form onSubmit={createEntry} className="entry-form">
-        <input
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          placeholder="Title"
-          required
-        />
-        <textarea
-          value={newContent}
-          onChange={(e) => setNewContent(e.target.value)}
-          placeholder="What's on your mind?"
-          required
-        />
-        <button type="submit">Add Entry</button>
-      </form>
-
+      <EntryForm
+        title={newTitle}
+        content={newContent}
+        onTitleChange={setNewTitle}
+        onContentChange={setNewContent}
+        onSubmit={handleCreateEntry}
+      />
       <div className="entries-log">
         {entries.map((entry) => (
-          <div key={entry._id} className="entry">
-            <h3>{entry.title}</h3>
-            <p>{entry.content}</p>
-            <small>{new Date(entry.createdAt).toLocaleString()}</small>
-          </div>
+          <DiaryEntry
+            key={entry._id}
+            entry={entry}
+            onDelete={handleDeleteEntry}
+          />
         ))}
       </div>
     </div>
