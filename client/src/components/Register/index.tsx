@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles.scss";
+import "../../styles/global.scss";
 
 interface RegisterForm {
   username: string;
@@ -48,38 +49,39 @@ const Register: React.FC = () => {
   };
 
   return (
-    <form className="register-form" onSubmit={handleSubmit}>
-      <h2>Create an Account</h2>
+    <div className="diary-background">
+      <div className="form-wrapper">
+        <form className="register-form" onSubmit={handleSubmit}>
+          <h2>Create an Account</h2>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+          />
 
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={formData.username}
-        onChange={handleChange}
-      />
-
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
-      />
-
-      {error && <div className="error">{error}</div>}
-
-      <button type="submit">Register</button>
-      <div className="register-redirect">
-        <button
-          type="button"
-          className="register-button"
-          onClick={() => navigate("/home")}
-        >
-          Back to Login
-        </button>
+          <button type="submit">Register</button>
+          <div className="register-redirect">
+            <button
+              type="button"
+              className="register-button"
+              onClick={() => navigate("/home")}
+            >
+              Back to Login
+            </button>
+          </div>
+        </form>
+        {error && <div className="error">{error}</div>}
       </div>
-    </form>
+    </div>
   );
 };
 

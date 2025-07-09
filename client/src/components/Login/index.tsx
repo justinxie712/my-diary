@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import "./styles.scss";
+import "../../styles/global.scss";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -31,37 +32,40 @@ function Login() {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="login-form">
-      <h2>Login to Diary.me</h2>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button type="submit">Login</button>
-      <div className="register-redirect">
-        <p>Don't have an account?</p>
-        <button
-          type="button"
-          className="register-button"
-          onClick={() => navigate("/register")}
-        >
-          Register
-        </button>
+    <div className="diary-background">
+      <div className="form-wrapper">
+        <form onSubmit={handleSubmit} className="login-form">
+          <h2>Login to Diary.me</h2>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+          <button type="submit">Login</button>
+          <div className="register-redirect">
+            <button
+              type="button"
+              className="register-button"
+              onClick={() => navigate("/register")}
+            >
+              Create an Account
+            </button>
+          </div>
+        </form>
+        {error && (
+          <div onClick={() => setError(null)} className="error">
+            {error}
+          </div>
+        )}
       </div>
-      {error && (
-        <div onClick={() => setError(null)} className="error">
-          {error}
-        </div>
-      )}
-    </form>
+    </div>
   );
 }
 

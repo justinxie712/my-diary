@@ -1,0 +1,28 @@
+.diary-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url("/assets/diary.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 400px; /* Set consistent max-width */
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
