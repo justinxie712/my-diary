@@ -3,6 +3,7 @@ import "./styles.scss";
 import { useAuth } from "../../context/AuthContext";
 import DiaryEntry from "../DiaryEntry";
 import EntryForm from "../EntryForm";
+import EditEntryModal from "../EditEntryModal";
 
 interface Entry {
   _id: string;
@@ -16,6 +17,8 @@ function Home() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -76,6 +79,42 @@ function Home() {
     }
   };
 
+  const handleEditClick = (entry: Entry) => {
+    setSelectedEntry(entry);
+    setIsEditOpen(true);
+  };
+
+  const handleSaveEdit = async (updatedEntry: Entry) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:3000/api/entries/${updatedEntry._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedEntry),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to save entry");
+      }
+
+      const updated = await res.json();
+
+      setEntries((prev) =>
+        prev.map((entry) => (entry._id === updated._id ? updated : entry))
+      );
+      setIsEditOpen(false);
+      setSelectedEntry(null);
+    } catch (err) {
+      console.error("Error saving entry:", err);
+      alert("Could not save entry.");
+    }
+  };
+
   return (
     <div className="home">
       <header>
@@ -95,9 +134,19 @@ function Home() {
             key={entry._id}
             entry={entry}
             onDelete={handleDeleteEntry}
+            onEdit={handleEditClick}
           />
         ))}
       </div>
+      <EditEntryModal
+        isOpen={isEditOpen}
+        entry={selectedEntry}
+        onClose={() => {
+          setIsEditOpen(false);
+          setSelectedEntry(null);
+        }}
+        onSave={handleSaveEdit}
+      />
     </div>
   );
 }
