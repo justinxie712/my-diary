@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles.scss";
 import "../../styles/global.scss";
+import { ToastContainer, toast } from "react-toastify";
 
 interface RegisterForm {
   username: string;
   password: string;
+  confirmPassword: string;
 }
 
-const Register: React.FC = () => {
+const Register: FC = () => {
   const [formData, setFormData] = useState<RegisterForm>({
     username: "",
     password: "",
+    confirmPassword: "",
   });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,8 +24,9 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.username || !formData.password) {
-      return setError("All fields are required.");
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match. Please try again.");
+      return;
     }
 
     try {
@@ -38,13 +41,13 @@ const Register: React.FC = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        return setError(data.error || "Registration failed.");
+        return toast.error(data.error || "Registration failed.");
       }
 
       localStorage.setItem("token", data.token);
       navigate("/");
     } catch (err) {
-      setError("Could not register. Try again later.");
+      toast.error("Could not register. Try again later.");
     }
   };
 
@@ -67,8 +70,23 @@ const Register: React.FC = () => {
             value={formData.password}
             onChange={handleChange}
           />
-
-          <button type="submit">Register</button>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+          <button
+            disabled={
+              !formData.username ||
+              !formData.password ||
+              !formData.confirmPassword
+            }
+            type="submit"
+          >
+            Register
+          </button>
           <div className="register-redirect">
             <button
               type="button"
@@ -79,7 +97,7 @@ const Register: React.FC = () => {
             </button>
           </div>
         </form>
-        {error && <div className="error">{error}</div>}
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </div>
     </div>
   );
