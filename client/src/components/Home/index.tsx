@@ -30,7 +30,7 @@ function Home() {
   const [newContent, setNewContent] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // 👈 NEW
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -148,11 +148,11 @@ function Home() {
         <UncontrolledDropdown>
           <DropdownToggle caret>Account</DropdownToggle>
           <DropdownMenu end>
-            <DropdownItem onClick={logout}>Logout</DropdownItem>
-            <DropdownItem divider />
             <DropdownItem onClick={() => setShowDeleteModal(true)}>
               Delete Account
             </DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem onClick={logout}>Logout</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
       </header>
