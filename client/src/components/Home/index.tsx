@@ -4,6 +4,17 @@ import { useAuth } from "../../context/AuthContext";
 import DiaryEntry from "../DiaryEntry";
 import EntryForm from "../EntryForm";
 import EditEntryModal from "../EditEntryModal";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "reactstrap";
 
 interface Entry {
   _id: string;
@@ -19,6 +30,7 @@ function Home() {
   const [newContent, setNewContent] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // 👈 NEW
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -27,9 +39,7 @@ function Home() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!res.ok) {
-          throw new Error(`Failed to fetch entries: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`Failed to fetch entries: ${res.status}`);
 
         const data = await res.json();
         setEntries(data);
@@ -38,9 +48,7 @@ function Home() {
       }
     };
 
-    if (token) {
-      fetchEntries();
-    }
+    if (token) fetchEntries();
   }, [token]);
 
   const handleCreateEntry = async (e: React.FormEvent) => {
@@ -79,6 +87,27 @@ function Home() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:3000/api/account", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok)
+        throw new Error(`Server responded with ${response.status}`);
+
+      console.log("Account deleted successfully");
+      logout();
+    } catch (err) {
+      console.error("Failed to delete account:", err);
+    } finally {
+      setShowDeleteModal(false); // close modal either way
+    }
+  };
+
   const handleEditClick = (entry: Entry) => {
     setSelectedEntry(entry);
     setIsEditOpen(true);
@@ -98,12 +127,9 @@ function Home() {
         }
       );
 
-      if (!res.ok) {
-        throw new Error("Failed to save entry");
-      }
+      if (!res.ok) throw new Error("Failed to save entry");
 
       const updated = await res.json();
-
       setEntries((prev) =>
         prev.map((entry) => (entry._id === updated._id ? updated : entry))
       );
@@ -119,7 +145,16 @@ function Home() {
     <div className="home">
       <header>
         <h1>Diary.me</h1>
-        <button onClick={logout}>Logout</button>
+        <UncontrolledDropdown>
+          <DropdownToggle caret>Account</DropdownToggle>
+          <DropdownMenu end>
+            <DropdownItem onClick={logout}>Logout</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem onClick={() => setShowDeleteModal(true)}>
+              Delete Account
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       </header>
       <EntryForm
         title={newTitle}
@@ -147,6 +182,23 @@ function Home() {
         }}
         onSave={handleSaveEdit}
       />
+      <Modal isOpen={showDeleteModal} toggle={() => setShowDeleteModal(false)}>
+        <ModalHeader toggle={() => setShowDeleteModal(false)}>
+          Confirm Account Deletion
+        </ModalHeader>
+        <ModalBody>
+          Are you absolutely sure you want to delete your account? This action
+          is permanent and cannot be undone.
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={handleDeleteAccount}>
+            Yes, delete my account
+          </Button>
+          <Button color="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 }

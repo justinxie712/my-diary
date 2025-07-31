@@ -27,3 +27,20 @@ export const login = async (req, res) => {
     res.status(500).json({ msg: "Login failed", error: err.message });
   }
 };
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.json({ msg: "Account deleted successfully" });
+  } catch (err) {
+    console.error("Account deletion failed:", err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+};

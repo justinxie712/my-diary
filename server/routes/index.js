@@ -1,5 +1,9 @@
 import express from "express";
-import { register, login } from "../controllers/authController.js";
+import {
+  register,
+  login,
+  deleteAccount,
+} from "../controllers/authController.js";
 import {
   createEntry,
   getEntries,
@@ -15,6 +19,7 @@ const router = express.Router();
 // Authentication and Authorization Routes
 router.post("/register", register);
 router.post("/login", login);
+router.delete("/account", auth, deleteAccount);
 
 // Diary Routes
 router.post("/entries", auth, createEntry);

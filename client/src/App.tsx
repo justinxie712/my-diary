@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import "./App.scss";
 import Register from "./components/Register";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const { isAuthenticated } = useAuth();
