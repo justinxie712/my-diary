@@ -41,7 +41,7 @@ function Login() {
     <div className="diary-background">
       <div className="form-wrapper">
         <form onSubmit={handleSubmit} className="login-form">
-          <h2>Login to Diary.me</h2>
+          <h1>Login to Diary.me</h1>
           <input
             type="text"
             value={username}

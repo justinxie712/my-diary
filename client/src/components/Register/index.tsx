@@ -55,7 +55,7 @@ const Register: FC = () => {
     <div className="diary-background">
       <div className="form-wrapper">
         <form className="register-form" onSubmit={handleSubmit}>
-          <h2>Create an Account</h2>
+          <h1>Create an Account</h1>
           <input
             type="text"
             name="username"
