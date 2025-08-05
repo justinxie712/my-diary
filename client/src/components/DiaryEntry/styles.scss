@@ -1,17 +1,18 @@
 .entry {
-  border: 1px solid #eee;
+  border: 1px solid #b1b1b1;
   padding: 1rem;
   border-radius: 10px;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px #0000000a;
+  background-color: white;
 
   .entry-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    h3 {
-      margin: 0;
+    button {
+      border-radius: 8px;
     }
 
     .delete-btn {
@@ -36,12 +37,7 @@
     text-overflow: ellipsis;
     filter: blur(4px);
     transition: filter 0.3s ease;
-    cursor: pointer; // optional for UX feedback
-
-    &:hover,
-    &:focus {
-      filter: blur(0);
-    }
+    cursor: pointer;
   }
 
   p {

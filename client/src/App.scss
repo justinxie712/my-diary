@@ -24,7 +24,6 @@ body {
   min-height: 100vh;
   width: 100%;
   margin: 0 auto;
-  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
 }
@@ -297,10 +296,6 @@ p {
     font-size: 14px;
   }
 
-  #root {
-    padding: 1rem;
-  }
-
   .container {
     padding: 0;
   }
@@ -341,10 +336,6 @@ p {
     font-size: 13px;
   }
 
-  #root {
-    padding: 0.5rem;
-  }
-
   .card {
     padding: 1rem;
     border-radius: 8px;
@@ -365,10 +356,6 @@ p {
 }
 
 @media (min-width: 1200px) {
-  #root {
-    padding: 2rem 4rem;
-  }
-
   .main-content {
     gap: 3rem;
   }
@@ -383,10 +370,6 @@ p {
 }
 
 @media (min-width: 1600px) {
-  #root {
-    padding: 2rem 6rem;
-  }
-
   .header {
     padding: 2.5rem 4rem;
   }
