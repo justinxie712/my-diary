@@ -68,4 +68,18 @@ A full-stack personal diary application built as my first CRUD application, feat
 - **Hot Reloading**: Configured development environment for rapid iteration
 - **Project Structure**: Organized code into logical directories and modules
 
+## Setting up MongoDB Atlas
+
+1. Navigate to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) and create an account.
+2. Choose the **Free** cluster tier and select the desired cloud provider/region.
+3. Create a database user with a username and password for application access.
+4. Configure the IP Access List to allow local machine connections (e.g., add `0.0.0.0/0` for development).
+
+### Connecting your application
+
+1. In the cluster's "Connect" dialog, choose *Connect your application* and copy the connection URI.
+2. Replace `<username>` and `<password>` in the URI with the database user credentials.
+3. Add the resulting URI to the project's environment configuration (e.g., in `.env` as `MONGODB_URI=<connection-string>`).
+4. Once the URI is configured, run any necessary setup scripts or migration steps to initialize the database.
+
 This project provided hands-on experience with the complete web development stack, from database design to user interface, teaching fundamental concepts that form the foundation for more complex applications.
