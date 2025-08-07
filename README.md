@@ -41,6 +41,12 @@ A full-stack personal diary application built as my first CRUD application, feat
 4. Each entry includes title, content, and automatic timestamps
 5. Entries are user-specific through MongoDB relationships
 
+<img width="1440" height="778" alt="Screenshot 2025-08-06 at 9 02 47 PM" src="https://github.com/user-attachments/assets/322af690-ea32-4066-b66a-3493340c7b51" />
+
+<img width="1440" height="779" alt="Screenshot 2025-08-06 at 9 03 01 PM" src="https://github.com/user-attachments/assets/dd424750-236a-48be-9022-e991bab2a031" />
+
+<img width="1440" height="780" alt="Screenshot 2025-08-06 at 9 18 47 PM" src="https://github.com/user-attachments/assets/dcf15e09-4fcd-463b-b5e0-cd65585ef989" />
+
 ## Critical Learnings
 
 ### Full-Stack Architecture
