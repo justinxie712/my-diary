@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FiTrash2, FiEdit2 } from "react-icons/fi";
 import "./styles.scss";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 type DiaryEntryProps = {
   entry: {
@@ -27,7 +28,7 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({ entry, onDelete, onEdit }) => {
     onDelete(entry._id);
     setShowConfirm(false);
   };
-
+  console.log("showConfirm", showConfirm);
   return (
     <div className="entry">
       <div className="entry-header">
@@ -52,21 +53,23 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({ entry, onDelete, onEdit }) => {
       </div>
       <p className="entry-content">{entry.content}</p>
       <small>{new Date(entry.createdAt).toLocaleString()}</small>
-
       {showConfirm && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <Modal isOpen={showConfirm} toggle={handleCancel}>
+          <ModalHeader toggle={handleCancel}>
+            Confirm Diary Entry Deletion
+          </ModalHeader>
+          <ModalBody>
             <p>{`Are you sure you want to delete the entry, "${entry.title}"?`}</p>
-            <div className="modal-buttons">
-              <button className="confirm-btn" onClick={handleConfirm}>
-                Yes, delete
-              </button>
-              <button className="cancel-btn" onClick={handleCancel}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" onClick={handleConfirm}>
+              Yes, delete
+            </Button>
+            <Button color="secondary" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
       )}
     </div>
   );
